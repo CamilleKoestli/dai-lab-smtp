@@ -1,0 +1,8 @@
+public class MessageReader extends MessageCreator{
+        
+    public MessageReader{
+
+    }
+
+    
+}

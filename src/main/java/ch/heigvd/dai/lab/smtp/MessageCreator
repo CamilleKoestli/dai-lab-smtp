@@ -1,0 +1,21 @@
+public class MessageCreator{
+    private String Subject;
+
+    private String Body;
+    
+    public MessageCreator{
+
+    }
+
+    public void {
+
+    }
+
+    public String getSubject{
+        return Subject;
+    }
+
+    public String getBody{
+        return Body;
+    }
+}
