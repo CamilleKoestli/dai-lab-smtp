@@ -9,7 +9,7 @@ public class MessageReader extends MessageCreator{
         super(smtpClient.getSubject(), smtpClient.getBody());
     }
 
-    private static String readSubjectMail() throws IOException {
+    private static String readSubjectMail(String mailPath) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(mailPath))) {
             // Assuming the first line is the subject
             return reader.readLine();
