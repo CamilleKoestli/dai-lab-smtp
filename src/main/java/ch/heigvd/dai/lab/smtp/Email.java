@@ -1,5 +1,7 @@
 package java.ch.heigvd.dai.lab.smtp;
 
+import java.util.List;
+
 public class Email {
     private String sender;
     private String receiver;
@@ -12,6 +14,17 @@ public class Email {
         this.subject = subject;
         this.body = body;
     }
+
+    public static Email createEmailFromGroup(EmailGroup emailGroup, String subject, String body) {
+        emailGroup.createGroup();
+        String sender = emailGroup.getSender();
+        List<String> receivers = emailGroup.getReceivers();
+
+        String receiver = (receivers != null && !receivers.isEmpty()) ? receivers.get(0) : null;
+
+        return new Email(sender, receiver, subject, body);
+    }
+}
 
 
 }
