@@ -15,16 +15,16 @@ public class Email {
         this.body = body;
     }
 
-    public static Email createEmailFromGroup(EmailGroup emailGroup, String subject, String body) {
+    public static Email createEmailFromGroup(EmailGroup emailGroup, MessageCreator messageCreator) {
         emailGroup.createGroup();
         String sender = emailGroup.getSender();
         List<String> receivers = emailGroup.getReceivers();
 
         String receiver = (receivers != null && !receivers.isEmpty()) ? receivers.get(0) : null;
 
+        String subject = messageCreator.getSubject();
+        String body = messageCreator.getBody();
+
         return new Email(sender, receiver, subject, body);
     }
-}
-
-
 }
