@@ -5,9 +5,10 @@ import static java.nio.charset.StandardCharsets.UTF_16;
 
 public class MessageReader extends MessageCreator{
 
-    public MessageReader(SMTPClient smtpClient, String mailPath) throws IOException {
-        super(smtpClient.getSubject(), smtpClient.getBody());
+    public MessageReader(String configPath) throws IOException {
+        super(readSubjectMail(configPath), readBodyMail(configPath));
     }
+
 
     private static String readSubjectMail(String mailPath) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(mailPath))) {
@@ -32,5 +33,5 @@ public class MessageReader extends MessageCreator{
     }
 
 
-    
+
 }

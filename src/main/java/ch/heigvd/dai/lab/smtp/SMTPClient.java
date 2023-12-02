@@ -15,14 +15,6 @@ public class SMTPClient {
         this.port = port;
     }
 
-    public String getSubject() {
-        return lastSentSubject;
-    }
-
-    public String getBody() {
-        return lastSentBody;
-    }
-
     public void connect() throws IOException {
         socket = new Socket(serverAddress, port);
         reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
