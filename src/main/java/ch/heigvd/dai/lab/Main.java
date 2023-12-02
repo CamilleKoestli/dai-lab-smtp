@@ -21,7 +21,7 @@ public class Main {
             String sender = emailGroup.getSender();
             List<String> receivers = emailGroup.getReceivers();
 
-            MessageCreator messageCreator = new MessageCreator("Sujet test", "Corps tes");
+            MessageCreator messageCreator = new MessageCreator("Sujet test", "Corps test");
 
             // Création d'un client SMTP avec le serveur et le port appropriés
             Email email = Email.createEmailFromGroup(emailGroup, messageCreator );
@@ -35,11 +35,10 @@ public class Main {
             // Envoi du mail à chaque destinataire
             for (String receiver : emailGroup.getReceivers()) {
                 smtpClient.connect();
-                smtpClient.sendMail("smtp.example.com", sender, receiver, messageCreator.getSubject(), messageCreator.getBody());
+                smtpClient.sendMail(sender, receiver, messageCreator.getSubject(), messageCreator.getBody());
                 smtpClient.receiveResponse();
-                //smtpClient.disconnect();
             }
-
+            smtpClient.disconnect();
 
         } catch (IOException e) {
             e.printStackTrace();
