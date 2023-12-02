@@ -32,16 +32,14 @@ public class SMTPClient {
     }
 
     public void sendSMTPRequest(String request) throws IOException {
-        try (BufferedWriter writer = this.writer) {
             writer.write(request + "\r\n");
             writer.flush();
-        }
+
     }
 
     public String receiveResponse() throws IOException {
-        try (BufferedReader reader = this.reader) {
             return reader.readLine();
-        }
+
     }
 
     public void disconnect() throws IOException {
@@ -61,7 +59,6 @@ public class SMTPClient {
     }
 
     public void sendMail(String from, String to, String subject, String body) throws IOException {
-        try (BufferedWriter writer = this.writer) {
             sendSMTPRequest("ehlo" + this.serverAddress);
             receiveResponse();
 
@@ -82,6 +79,6 @@ public class SMTPClient {
 
             sendSMTPRequest("quit");
             receiveResponse();
-        }
+
     }
 }

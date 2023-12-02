@@ -12,7 +12,7 @@ public class Main {
             EmailGroup emailGroup = new EmailGroup();
 
             // Lire les e-mails depuis le fichier
-            emailGroup.readEmailsFromFile("src/main/java/ch/heigvd/dai/lab/config/emails.utf8");
+            emailGroup.readEmailsFromFile("src/main/ch/heigvd/dai/lab/config/emails.utf8");
 
             // Créer le groupe
             emailGroup.createGroup();
@@ -27,10 +27,10 @@ public class Main {
             Email email = Email.createEmailFromGroup(emailGroup, messageCreator );
 
             // Création d'un client SMTP avec le serveur et le port appropriés
-            SMTPClient smtpClient = new SMTPClient("127.0.0.1", 25);
+            SMTPClient smtpClient = new SMTPClient("127.0.0.1", 1025);
 
             // Création d'un objet MessageReader à partir du chemin du fichier de configuration
-            MessageReader messageReader = new MessageReader(smtpClient, "src/main/java/ch/heigvd/dai/lab/config/messages.utf8");
+            MessageReader messageReader = new MessageReader(smtpClient, "src/main/ch/heigvd/dai/lab/config/messages.utf8");
 
             // Envoi du mail à chaque destinataire
             for (String receiver : emailGroup.getReceivers()) {
