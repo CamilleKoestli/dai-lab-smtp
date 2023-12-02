@@ -1,6 +1,6 @@
-package java.ch.heigvd.dai.lab;
+package ch.heigvd.dai.lab;
 
-import java.ch.heigvd.dai.lab.smtp.*;
+import ch.heigvd.dai.lab.smtp.*;
 import java.io.IOException;
 import java.util.List;
 

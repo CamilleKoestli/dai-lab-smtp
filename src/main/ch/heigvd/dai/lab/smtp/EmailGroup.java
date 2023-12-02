@@ -1,6 +1,6 @@
-package java.ch.heigvd.dai.lab.smtp;
+package ch.heigvd.dai.lab.smtp;
 
-import java.ch.heigvd.dai.lab.fileio.MessageManager;
+import ch.heigvd.dai.lab.fileio.MessageManager;
 import java.util.ArrayList;
 import java.util.List;
 

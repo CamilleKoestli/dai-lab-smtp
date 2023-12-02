@@ -1,9 +1,9 @@
-package java.ch.heigvd.dai.lab.fileio;
+package ch.heigvd.dai.lab.fileio;
 
 import java.io.File;
 import java.nio.charset.Charset;
-import java.ch.heigvd.dai.lab.smtp.MessageCreator;
-import java.ch.heigvd.dai.lab.smtp.EmailGroup;
+import ch.heigvd.dai.lab.smtp.MessageCreator;
+import ch.heigvd.dai.lab.smtp.EmailGroup;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
