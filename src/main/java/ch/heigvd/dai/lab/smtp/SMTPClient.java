@@ -9,6 +9,8 @@ public class SMTPClient {
     private Socket socket;
     private BufferedReader reader;
     private BufferedWriter writer;
+    private String lastSentSubject;
+    private String lastSentBody;
 
     public SMTPClient(String serverAddress, int port) {
         this.serverAddress = serverAddress;
@@ -30,34 +32,56 @@ public class SMTPClient {
     }
 
     public void sendSMTPRequest(String request) throws IOException {
-        writer.write(request + "\r\n");
-        writer.flush();
+        try (BufferedWriter writer = this.writer) {
+            writer.write(request + "\r\n");
+            writer.flush();
+        }
     }
 
     public String receiveResponse() throws IOException {
-        return reader.readLine();
+        try (BufferedReader reader = this.reader) {
+            return reader.readLine();
+        }
     }
 
-    public void sendMail(String serverAddress, String from, String to, String subject, String body) throws IOException {
-        sendSMTPRequest("ehlo" + serverAddress);
-        receiveResponse();
+    public void disconnect() throws IOException {
+        if (socket != null && !socket.isClosed()) {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                // Handle the IOException if needed
+                e.printStackTrace();
+            }
 
-        sendSMTPRequest("mail from:<" + from + ">");
-        receiveResponse();
+            // Set the socket, reader, and writer to null after closing
+            socket = null;
+            reader = null;
+            writer = null;
+        }
+    }
 
-        sendSMTPRequest("rcpt to:<" + to + ">");
-        receiveResponse();
+    public void sendMail(String from, String to, String subject, String body) throws IOException {
+        try (BufferedWriter writer = this.writer) {
+            sendSMTPRequest("ehlo" + this.serverAddress);
+            receiveResponse();
 
-        sendSMTPRequest("data");
-        receiveResponse();
+            sendSMTPRequest("mail from:<" + from + ">");
+            receiveResponse();
 
-        sendSMTPRequest("Subject: " + subject);
-        sendSMTPRequest("");
-        sendSMTPRequest(body);
-        sendSMTPRequest(".");
-        receiveResponse();
+            sendSMTPRequest("rcpt to:<" + to + ">");
+            receiveResponse();
 
-        sendSMTPRequest("quit");
-        receiveResponse();
+            sendSMTPRequest("data");
+            receiveResponse();
+
+            sendSMTPRequest("Subject: " + subject);
+            sendSMTPRequest("");
+            sendSMTPRequest(body);
+            sendSMTPRequest(".");
+            receiveResponse();
+
+            sendSMTPRequest("quit");
+            receiveResponse();
+        }
     }
 }
