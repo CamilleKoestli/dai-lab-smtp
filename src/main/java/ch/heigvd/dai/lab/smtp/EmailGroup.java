@@ -1,5 +1,6 @@
 package java.ch.heigvd.dai.lab.smtp;
 
+import java.ch.heigvd.dai.lab.fileio.MessageManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,5 +41,17 @@ public class EmailGroup {
 
     public List<String> getReceivers() {
         return receivers;
+    }
+
+    public void readEmailsFromFile(String emailFile) {
+        // Use the MessageManager class to get a list of EmailGroups
+        MessageManager messageManager = new MessageManager(emailFile);
+        List<EmailGroup> emailGroups = messageManager.getGroupMails(emailFile);
+
+        // Assuming you want to add the first group's email addresses to this instance
+        if (!emailGroups.isEmpty()) {
+            EmailGroup firstGroup = emailGroups.get(0);
+            this.emailAddresses.addAll(firstGroup.getEmailAddresses());
+        }
     }
 }
