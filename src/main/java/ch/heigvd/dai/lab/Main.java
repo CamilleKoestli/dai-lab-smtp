@@ -1,5 +1,6 @@
-package java.ch.heigvd.dai.lab.smtp;
+package java.ch.heigvd.dai.lab;
 
+import java.ch.heigvd.dai.lab.smtp.*;
 import java.io.IOException;
 import java.util.List;
 
@@ -20,9 +21,6 @@ public class Main {
             String sender = emailGroup.getSender();
             List<String> receivers = emailGroup.getReceivers();
 
-            // Création d'un objet MessageReader à partir du chemin du fichier de configuration
-            MessageReader messageReader = new MessageReader("src/main/java/ch/heigvd/dai/lab/config/messages.utf8");
-
             MessageCreator messageCreator = new MessageCreator("Sujet test", "Corps tes");
 
             // Création d'un client SMTP avec le serveur et le port appropriés
@@ -30,6 +28,9 @@ public class Main {
 
             // Création d'un client SMTP avec le serveur et le port appropriés
             SMTPClient smtpClient = new SMTPClient("127.0.0.1", 25);
+
+            // Création d'un objet MessageReader à partir du chemin du fichier de configuration
+            MessageReader messageReader = new MessageReader(smtpClient, "src/main/java/ch/heigvd/dai/lab/config/messages.utf8");
 
             // Envoi du mail à chaque destinataire
             for (String receiver : emailGroup.getReceivers()) {
