@@ -1,10 +1,10 @@
 package ch.heigvd.smtp;
 
-public class MessageCreator{
+public class Message{
     private String subject;
     private String body;
     
-    public MessageCreator(String subject, String body){
+    public Message(String subject, String body){
         this.subject = subject;
         this.body = body;
     }
