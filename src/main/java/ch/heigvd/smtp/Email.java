@@ -4,27 +4,50 @@ import java.util.List;
 
 public class Email {
     private String sender;
-    private String receiver;
+    private List<String> receivers;
     private String subject;
     private String body;
 
-    public Email(String sender, String receiver, String subject, String body) {
+    public Email(String sender, List<String> receivers, String subject, String body) {
         this.sender = sender;
-        this.receiver = receiver;
+        this.receivers = receivers;
         this.subject = subject;
         this.body = body;
     }
 
-    public static Email createEmailFromGroup(EmailGroup emailGroup, MessageCreator messageCreator) {
+    public static Email createEmailForGroup(EmailGroup emailGroup, Message message) {
         emailGroup.createGroup();
         String sender = emailGroup.getSender();
         List<String> receivers = emailGroup.getReceivers();
 
-        String receiver = (receivers != null && !receivers.isEmpty()) ? receivers.get(0) : null;
+        String subject = message.getSubject();
+        String body = message.getBody();
 
-        String subject = messageCreator.getSubject();
-        String body = messageCreator.getBody();
+        return new Email(sender, receivers, subject, body);
+    }
 
-        return new Email(sender, receiver, subject, body);
+    public String getSender() {
+        return sender;
+    }
+    public List<String> getReceivers() {
+        return receivers;
+    }
+    public String getSubject() {
+        return subject;
+    }
+    public String getBody() {
+        return body;
+    }
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+    public void setReceivers(List<String> receivers) {
+        this.receivers = receivers;
+    }
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+    public void setBody(String body) {
+        this.body = body;
     }
 }
