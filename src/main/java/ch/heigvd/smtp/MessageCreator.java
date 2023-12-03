@@ -1,6 +1,4 @@
-package ch.heigvd.dai.lab.smtp;
-
-import ch.heigvd.dai.lab.smtp.SMTPClient;
+package ch.heigvd.smtp;
 
 public class MessageCreator{
     private String subject;

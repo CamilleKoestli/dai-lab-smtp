@@ -1,9 +1,8 @@
-package ch.heigvd.dai.lab.fileio;
+package ch.heigvd.fileio;
 
 import java.io.File;
 import java.nio.charset.Charset;
-import ch.heigvd.dai.lab.smtp.MessageCreator;
-import ch.heigvd.dai.lab.smtp.EmailGroup;
+import ch.heigvd.smtp.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,13 +10,11 @@ import java.util.List;
 public class MessageManager {
 
     private final File file;
-    private final FileReaderWriter fileReaderWriter;
-    private final EncodingSelector encodingSelector;
+    private final FileReaderWriter fileReaderWriter = new FileReaderWriter();
+    private final EncodingSelector encodingSelector = new EncodingSelector();
 
     public MessageManager(String file) {
         this.file = new File(file);
-        this.fileReaderWriter = new FileReaderWriter();
-        this.encodingSelector = new EncodingSelector();
     }
 
     public MessageCreator createRandomMessage() {

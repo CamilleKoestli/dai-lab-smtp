@@ -1,4 +1,4 @@
-package ch.heigvd.dai.lab.fileio;
+package ch.heigvd.fileio;
 
 import java.io.*;
 import java.nio.charset.Charset;

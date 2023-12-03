@@ -1,6 +1,6 @@
-package ch.heigvd.dai.lab.smtp;
+package ch.heigvd.smtp;
 
-import ch.heigvd.dai.lab.fileio.MessageManager;
+import ch.heigvd.fileio.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,11 +47,5 @@ public class EmailGroup {
         // Use the MessageManager class to get a list of EmailGroups
         MessageManager messageManager = new MessageManager(emailFile);
         List<EmailGroup> emailGroups = messageManager.getGroupMails(emailFile);
-
-        // Assuming you want to add the first group's email addresses to this instance
-        if (!emailGroups.isEmpty()) {
-            EmailGroup firstGroup = emailGroups.get(0);
-            this.emailAddresses.addAll(firstGroup.getEmailAddresses());
-        }
     }
 }

@@ -1,4 +1,4 @@
-package ch.heigvd.dai.lab.smtp;
+package ch.heigvd.smtp;
 
 import java.util.List;
 
