@@ -3,7 +3,7 @@ package ch.heigvd.smtp;
 import java.io.*;
 import static java.nio.charset.StandardCharsets.UTF_16;
 
-public class MessageReader extends MessageCreator{
+public class MessageReader extends Message{
 
     public MessageReader(SMTPClient smtpClient, String mailPath) throws IOException {
         super(smtpClient.getSubject(), smtpClient.getBody());
