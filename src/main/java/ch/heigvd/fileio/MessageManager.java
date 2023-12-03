@@ -1,8 +1,9 @@
 package ch.heigvd.fileio;
 
+import ch.heigvd.smtp.*;
+
 import java.io.File;
 import java.nio.charset.Charset;
-import ch.heigvd.smtp.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,13 +18,13 @@ public class MessageManager {
         this.file = new File(file);
     }
 
-    public MessageCreator createRandomMessage() {
+    public Message createRandomMessage() {
         // Utilisez la classe FileReaderWriter pour lire le contenu du fichier
         Charset encoding = encodingSelector.getEncoding(file);
         String messageContent = fileReaderWriter.readFile(file, encoding);
 
         // Supposons que MessageCreator ait un constructeur qui prend le contenu du message et crée un objet Message
-        return new MessageCreator("", messageContent);
+        return new Message("", messageContent);
     }
     public List<EmailGroup> getGroupMails(String emailFile) {
         File emailListFile = new File(emailFile);
@@ -34,7 +35,7 @@ public class MessageManager {
         String emails = fileReaderWriter.readFile(emailListFile, encoding);
 
         // Split the emails by newline character
-        String[] emailArray = emails.split("\\n");
+        String[] emailArray = emails.split("--------");
 
         // Shuffle the array to get a random order
         List<String> shuffledEmails = new ArrayList<>(List.of(emailArray));
