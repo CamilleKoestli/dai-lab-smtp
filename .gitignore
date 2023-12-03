@@ -10,5 +10,6 @@
 /target
 *.class
 *.jar
+.iml
 
 out
