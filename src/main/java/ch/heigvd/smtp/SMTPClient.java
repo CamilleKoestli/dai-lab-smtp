@@ -15,7 +15,6 @@ public class SMTPClient {
     private String lastSentBody;
 
 
-
     public SMTPClient(String serverAddress, int port) {
         this.serverAddress = serverAddress;
         this.port = port;
@@ -43,9 +42,9 @@ public class SMTPClient {
 
     public void receiveResponse() throws IOException {
         String line;
-        while((line = reader.readLine()) != null){
+        while ((line = reader.readLine()) != null) {
             System.out.println("S: " + line);
-            if(line.charAt(3) != '-'){
+            if (line.charAt(3) != '-') {
                 break;
             }
         }
@@ -71,18 +70,20 @@ public class SMTPClient {
     }
 
     public void sendMail(String from, List<String> to, String subject, String body) throws IOException {
-            receiveResponse();
 
-            sendSMTPRequest("ehlo " + this.serverAddress);
-            receiveResponse();
+        this.connect();
 
+        receiveResponse();
+
+        sendSMTPRequest("ehlo " + this.serverAddress);
+        receiveResponse();
+
+        for (String rec : to) {
             sendSMTPRequest("mail from:<" + from + ">");
             receiveResponse();
 
-            for(String rec : to) {
-                sendSMTPRequest("rcpt to:<" + rec + ">");
-                receiveResponse();
-            }
+            sendSMTPRequest("rcpt to:<" + rec + ">");
+            receiveResponse();
 
             sendSMTPRequest("data");
             receiveResponse();
@@ -92,8 +93,11 @@ public class SMTPClient {
             sendSMTPRequest(body);
             sendSMTPRequest(".");
             receiveResponse();
+        }
 
-            sendSMTPRequest("quit");
-            receiveResponse();
+        sendSMTPRequest("quit");
+        receiveResponse();
+
+        reader.close();
     }
 }
