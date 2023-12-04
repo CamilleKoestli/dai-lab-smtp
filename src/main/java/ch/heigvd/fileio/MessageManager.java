@@ -2,6 +2,7 @@ package ch.heigvd.fileio;
 
 import ch.heigvd.smtp.*;
 
+import java.awt.*;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -10,24 +11,48 @@ import java.util.List;
 
 public class MessageManager {
 
-    private final File file;
     private final FileReaderWriter fileReaderWriter = new FileReaderWriter();
     private final EncodingSelector encodingSelector = new EncodingSelector();
 
-    public MessageManager(String file) {
-        this.file = new File(file);
-    }
+    public MessageManager() {}
 
-    public Message createRandomMessage() {
-        // Utilisez la classe FileReaderWriter pour lire le contenu du fichier
+    public List<Message> readContentFromFile(String filePath) {
+        List<Message> messages = new ArrayList<>();
+
+        File file = new File(filePath);
         Charset encoding = encodingSelector.getEncoding(file);
-        String messageContent = fileReaderWriter.readFile(file, encoding);
+        String fileContent = fileReaderWriter.readFile(file, encoding);
 
-        // Supposons que MessageCreator ait un constructeur qui prend le contenu du message et crée un objet Message
-        return new Message("", messageContent);
+        String[] messageSections = fileContent.split("--------");
+
+        for (int i = 0; i < messageSections.length; i++) {
+            String section = messageSections[i].trim();
+
+            // Skip empty sections
+            if (section.isEmpty()) {
+                continue;
+            }
+
+            String[] lines = section.split("\n");
+
+            // Set default in case section has no subject/body
+            Message m = new Message("", "");
+
+            for (String line : lines) {
+                line = line.trim();
+                if (line.startsWith("Subject:")) {
+                    m.setSubject(line.substring("Subject:".length()).trim());
+                } else if (line.startsWith("Body:")) {
+                    m.setBody(line.substring("Body:".length()).trim());
+                }
+            }
+            messages.add(m);
+        }
+        return messages;
     }
-    public List<EmailGroup> getGroupMails(String emailFile) {
-        File emailListFile = new File(emailFile);
+
+    public List<EmailGroup> getGroupMails(String emailFilePath) {
+        File emailListFile = new File(emailFilePath);
         List<EmailGroup> emailGroups = new ArrayList<>();
 
         // Read the list of emails from the file
@@ -35,7 +60,7 @@ public class MessageManager {
         String emails = fileReaderWriter.readFile(emailListFile, encoding);
 
         // Split the emails by newline character
-        String[] emailArray = emails.split("--------");
+        String[] emailArray = emails.split("\n");
 
         // Shuffle the array to get a random order
         List<String> shuffledEmails = new ArrayList<>(List.of(emailArray));
@@ -51,4 +76,7 @@ public class MessageManager {
         }
         return emailGroups;
     }
+
+    //TODO EmailValidator
+
 }

@@ -16,7 +16,11 @@ public class EmailGroup {
     }
 
     public void addEmailAddress(String emailAddress) {
-        emailAddresses.add(emailAddress);
+        if(sender == null) {
+            sender = emailAddress;
+        } else {
+            receivers.add(emailAddress);
+        }
     }
 
     public List<String> getEmailAddresses() {
@@ -45,7 +49,7 @@ public class EmailGroup {
 
     public void readEmailsFromFile(String emailFile) {
         // Use the MessageManager class to get a list of EmailGroups
-        MessageManager messageManager = new MessageManager(emailFile);
+        MessageManager messageManager = new MessageManager();
         List<EmailGroup> emailGroups = messageManager.getGroupMails(emailFile);
     }
 }

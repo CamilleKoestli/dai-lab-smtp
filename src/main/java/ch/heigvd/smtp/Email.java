@@ -15,15 +15,8 @@ public class Email {
         this.body = body;
     }
 
-    public static Email createEmailForGroup(EmailGroup emailGroup, Message message) {
-        emailGroup.createGroup();
-        String sender = emailGroup.getSender();
-        List<String> receivers = emailGroup.getReceivers();
-
-        String subject = message.getSubject();
-        String body = message.getBody();
-
-        return new Email(sender, receivers, subject, body);
+    public Email(EmailGroup emailGroup, Message message) {
+        this(emailGroup.getSender(), emailGroup.getReceivers(), message.getSubject(), message.getBody());
     }
 
     public String getSender() {

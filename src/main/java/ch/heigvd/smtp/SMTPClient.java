@@ -2,6 +2,7 @@ package ch.heigvd.smtp;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
 
 public class SMTPClient {
     private String serverAddress;
@@ -52,21 +53,28 @@ public class SMTPClient {
             }
 
             // Set the socket, reader, and writer to null after closing
+            reader.close();
+            writer.close();
+
             socket = null;
             reader = null;
             writer = null;
         }
     }
 
-    public void sendMail(String from, String to, String subject, String body) throws IOException {
+    public void sendMail(String from, List<String> to, String subject, String body) throws IOException {
+            receiveResponse();
+
             sendSMTPRequest("ehlo" + this.serverAddress);
             receiveResponse();
 
             sendSMTPRequest("mail from:<" + from + ">");
             receiveResponse();
 
-            sendSMTPRequest("rcpt to:<" + to + ">");
-            receiveResponse();
+            for(String rec : to) {
+                sendSMTPRequest("rcpt to:<" + rec + ">");
+                receiveResponse();
+            }
 
             sendSMTPRequest("data");
             receiveResponse();
@@ -79,6 +87,5 @@ public class SMTPClient {
 
             sendSMTPRequest("quit");
             receiveResponse();
-
     }
 }
