@@ -88,9 +88,13 @@ public class SMTPClient {
             sendSMTPRequest("data");
             receiveResponse();
 
+            //TODO
+            sendSMTPRequest("Content-Type: text/plain; charset=utf-8");
+            sendSMTPRequest("from:<" + from + ">");
+            sendSMTPRequest("to:<" + rec + ">");
             sendSMTPRequest("Subject: " + subject);
-            sendSMTPRequest("");
-            sendSMTPRequest(body);
+            sendSMTPRequest("\n");
+            sendSMTPRequest("Body: "+ body);
             sendSMTPRequest(".");
             receiveResponse();
         }
