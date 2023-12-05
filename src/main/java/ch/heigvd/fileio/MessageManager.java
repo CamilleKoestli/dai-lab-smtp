@@ -1,10 +1,11 @@
 package ch.heigvd.fileio;
 
 import ch.heigvd.smtp.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.awt.*;
 import java.io.File;
-import java.nio.charset.Charset;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,64 +17,65 @@ public class MessageManager {
 
     public MessageManager() {}
 
-    public List<Message> readContentFromFile(String filePath) {
+    public List<Message> readMessagesFromJsonFile(String filePath) throws IOException {
         List<Message> messages = new ArrayList<>();
-
         File file = new File(filePath);
-        Charset encoding = encodingSelector.getEncoding(file);
-        String fileContent = fileReaderWriter.readFile(file, encoding);
 
-        String[] messageSections = fileContent.split("--------");
+        String subject;
+        String body;
 
-        for (int i = 0; i < messageSections.length; i++) {
-            String section = messageSections[i].trim();
+        // Create ObjectMapper instance
+        ObjectMapper objectMapper = new ObjectMapper();
 
-            // Skip empty sections
-            if (section.isEmpty()) {
-                continue;
-            }
+        // Read JSON file and parse it into a JsonNode
+        JsonNode jsonNode = objectMapper.readTree(file);
 
-            String[] lines = section.split("\n");
+        // Get the "messages" node
+        JsonNode messagesNode = jsonNode.get("messages");
 
-            // Set default in case section has no subject/body
-            Message m = new Message("", "");
+        // Iterate through each "message" in "messages"
+        for (JsonNode messageNode : messagesNode) {
+            // Extract "subject" and "body" from each "message"
+            subject = messageNode.get("subject").asText();
+            body = messageNode.get("body").asText();
 
-            for (String line : lines) {
-                line = line.trim();
-                if (line.startsWith("Subject:")) {
-                    m.setSubject(line.substring("Subject:".length()).trim());
-                } else if (line.startsWith("Body:")) {
-                    m.setBody(line.substring("Body:".length()).trim());
-                }
-            }
-            messages.add(m);
+            // Create Message object and add it to the list
+            Message message = new Message(subject, body);
+            messages.add(message);
         }
         return messages;
     }
 
-    public List<EmailGroup> getGroupMails(String emailFilePath) {
-        File emailListFile = new File(emailFilePath);
+    public List<EmailGroup> getGroupMailsFromJsonFile(String emailFilePath) throws IOException {
+
+        List<String> emails = new ArrayList<>();
         List<EmailGroup> emailGroups = new ArrayList<>();
 
-        // Read the list of emails from the file
-        Charset encoding = encodingSelector.getEncoding(emailListFile);
-        String emails = fileReaderWriter.readFile(emailListFile, encoding);
+        File file = new File(emailFilePath);
+        String email;
 
-        // Split the emails by newline character
-        String[] emailArray = emails.split("\n");
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(file);
+        JsonNode emailsNode = jsonNode.get("emails");
 
-        // Shuffle the array to get a random order
-        List<String> shuffledEmails = new ArrayList<>(List.of(emailArray));
-        Collections.shuffle(shuffledEmails);
+        for (JsonNode node : emailsNode) {
+            email = node.get("mail").asText();
+            emails.add(email);
+        }
+
+        Collections.shuffle(emails);
 
         // Create EmailGroup objects with 2/3 emails in random order
-        for (int i = 0; i < shuffledEmails.size(); i += 3) {
+        for (int i = 0; i < emails.size(); i += 3) {
             EmailGroup emailGroup = new EmailGroup();
-            for (int j = 0; j < 3 && i + j < shuffledEmails.size(); j++) {
-                emailGroup.addEmailAddress(shuffledEmails.get(i + j));
+            for (int j = 0; j < 3 && i + j < emails.size(); j++) {
+                emailGroup.addEmailAddress(emails.get(i + j));
             }
             emailGroups.add(emailGroup);
         }
+
+        System.out.println(emailGroups);
+
         return emailGroups;
     }
 
