@@ -14,7 +14,7 @@ public class Main {
         try {
             // Création d'un groupe d'e-mails avec MessageManager
             MessageManager messageManager = new MessageManager();
-            List<EmailGroup> emailGroups = messageManager.getGroupMails("src/main/java/ch/heigvd/config/emails.utf8");
+            List<EmailGroup> emailGroups = messageManager.getGroupMailsFromJsonFile("src/main/java/ch/heigvd/config/emails.json");
             /*for(EmailGroup x : emailGroups){
                 System.out.println("Sender : " + x.getSender());
                 for(String y : x.getReceivers()){
@@ -28,7 +28,7 @@ public class Main {
             System.out.println("sender: " + emailGroup.getSender() + ", receivers: " + emailGroup.getReceivers());  //TODO*/
 
             // Création d'un message avec MessageManager
-            List<Message> messages = messageManager.readContentFromFile("src/main/java/ch/heigvd/config/messages.utf8");
+            List<Message> messages = messageManager.readMessagesFromJsonFile("src/main/java/ch/heigvd/config/messages.json");
             Collections.shuffle(messages);
             // Select the first (random) message
             //Message selectedMessage = messages.get(0);      //TODO change

@@ -1,0 +1,26 @@
+{
+  "messages": {
+    "message1": {
+      "subject": "Réunion de projet",
+      "body": " Bonjour,\n\nNous avons une réunion de projet prévue pour demain à 14h. Assurez-vous de préparer votre rapport de statut."
+    },
+    "message2": {
+      "subject": "Invitation à un événement",
+      "body": "Hello,\n\nVous êtes cordialement invité à notre événement spécial le [date] à [heure]. Nous attendons votre présence avec impatience.\n\nA bientôt!"
+    },
+    "message3": {
+      "subject": "Mise à jour du compte",
+      "body": "Bonjour,\n\nNous avons récemment mis à jour nos politiques de confidentialité. Veuillez prendre quelques minutes pour examiner les changements sur votre compte.\nMerci."
+    },
+    "message4": {
+      "subject": "Opportunité de collaboration",
+      "body": "Salut,\n\nJ'ai remarqué que vous travaillez dans le même domaine que moi. Serait-il possible de discuter d'une opportunité de collaboration potentielle ?\n\nMerci! "
+
+    },
+    "message5": {
+      "subject": "Remerciements pour votre contribution",
+      "body": "Rebonjour, \n\nNous voulions vous exprimer notre gratitude pour votre contribution exceptionnelle au projet. Votre travail a un impact significatif.\n\nMerci infiniment!"
+    }
+  }
+}
+
