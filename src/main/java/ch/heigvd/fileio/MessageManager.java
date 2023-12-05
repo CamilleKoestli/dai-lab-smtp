@@ -12,9 +12,6 @@ import java.util.List;
 
 public class MessageManager {
 
-    private final FileReaderWriter fileReaderWriter = new FileReaderWriter();
-    private final EncodingSelector encodingSelector = new EncodingSelector();
-
     public MessageManager() {}
 
     public List<Message> readMessagesFromJsonFile(String filePath) throws IOException {
