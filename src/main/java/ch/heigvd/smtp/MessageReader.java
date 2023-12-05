@@ -1,3 +1,4 @@
+/*
 package ch.heigvd.smtp;
 
 import java.io.*;
@@ -33,4 +34,4 @@ public class MessageReader extends Message{
 
 
     
-}
+}*/

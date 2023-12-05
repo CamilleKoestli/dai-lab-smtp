@@ -16,7 +16,7 @@ MockMock
 
 MockMock appartient à la catégorie des serveurs conçus pour reproduire un service réel. Dans notre contexte, nous
 l'utilisons pour simuler un serveur SMTP. La version de MockMock que nous avons adoptée n'est pas
-la version originale ; il s'agit d'un clone provenant d'un dépôt GitHub.
+la version originale ; il s'agit d'un clone provenant d'un dépôt [GitHub MailDev](https://github.com/maildev/maildev).
 
 Cette solution nous permet de voir les différentes parties des courriers électroniques que nous envoyons, notamment
 les en-têtes, le sujet et le corps.
@@ -30,7 +30,7 @@ Pour construire l'image du container, nous devons lancer la commande
 
 Une fois que l'image est prête, on peut l'exécuter en utiliser le code
 
-    ./run-container.sh
+    docker run -d -p 1080:1080 -p 1025:1025 maildev/maildev
 
 Il est possible de confirmer que le conteneur s'exécute correctement en consultat la liste des container. Le statut "
 running" doit apparaître
@@ -63,7 +63,7 @@ Implémentation
 
 ### Diagramme UML
 
-**//TODO**
+![diagram.png](diagram.png)
 
 On peut séparer notre code en 4 parties :
 
@@ -92,21 +92,15 @@ On peut séparer notre code en 4 parties :
 
 ### Partie fileIO
 
-La gestion des fichiers assure le bon fonctionnement de la lecture des adresses
-e-mail, des messages, ainsi que l'écriture des résultats.
-
-* `EncodingSelector` : Cette classe détermination l'encodage des fichiers. En fonction
-  de l'extension du fichier, elle associe l'encodage correspondant. Actuellement, les extensions prises en charge sont
-  .utf8, .txt, .utf16be, .utf16le et les .json.
-
-* `FileReaderWriter` : Elle offre des méthodes pour lire et écrire le contenu des fichiers.
-
-* `MessageManager` : Cette classe MessageManager permet la lecture des fichiers contenant les messages et les adresses
-  e-mail. Elle utilise
-  les services de `FileReaderWriter` pour accéder au contenu des fichiers et `EncodingSelector` pour déterminer les
-  encodages. La méthode `readContentFromFile` lit les messages à partir d'un fichier, en les séparant en sections. De
-  plus, la méthode `getGroupMails` lit les adresses e-mail, les mélange de manière aléatoire, puis les
-  regroupe pour former des objets `EmailGroup`.
+* `MessageManager` : La méthode `readMessagesFromJsonFile` lit les messages à partir d'un fichier JSON. Chaque
+  message est représenté par un nœud JSON contenant les champs "subject" et "body". Ces informations sont ensuite
+  utilisées pour créer des objets Message. L'utilisation de la bibliothèque Jackson facilite la manipulation des données
+  JSON. La méthode `getGroupMailsFromJsonFile` va fonctionner de la même manière mais pour les e-mails. Chaque e-mail
+  est
+  encapsulé dans un nœud JSON avec le champ "mail". Ces adresses sont ensuite mélangées de manière aléatoire et
+  regroupées
+  par lot de 3 pour former des objets EmailGroup. Cette approche offre une flexibilité accrue en matière de gestion des
+  données d'e-mails.
 
 ### Partie config
 
@@ -115,9 +109,9 @@ pour les campagnes d'envoi simulées. Cette section s'inspire des pratiques éta
 garantir la lisibilité et la modularité du code.
 
 * `emails.json` : Ce fichier classe contient l'adresse de la personne qui envoie les e-mails ainsi que les groupes d'
-  e-mails qui seront les victimes. 
+  e-mails qui seront les victimes.
 
-* `messages.json` : Ce fichier représente un courrier électronique avec son sujet et son corps. 
+* `messages.json` : Ce fichier représente un courrier électronique avec son sujet et son corps.
 
 ### Partie Main
 
