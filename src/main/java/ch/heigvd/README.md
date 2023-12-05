@@ -97,7 +97,7 @@ e-mail, des messages, ainsi que l'écriture des résultats.
 
 * `EncodingSelector` : Cette classe détermination l'encodage des fichiers. En fonction
   de l'extension du fichier, elle associe l'encodage correspondant. Actuellement, les extensions prises en charge sont
-  .utf8, .txt, .utf16be, et .utf16le.
+  .utf8, .txt, .utf16be, .utf16le et les .json.
 
 * `FileReaderWriter` : Elle offre des méthodes pour lire et écrire le contenu des fichiers.
 
@@ -114,10 +114,10 @@ La configuration joue un rôle central dans notre application, regroupant la lis
 pour les campagnes d'envoi simulées. Cette section s'inspire des pratiques établies dans le laboratoire précédent pour
 garantir la lisibilité et la modularité du code.
 
-* `emails.utf8` : Ce fichier classe contient l'adresse de la personne qui envoie les e-mails ainsi que les groupes d'
+* `emails.json` : Ce fichier classe contient l'adresse de la personne qui envoie les e-mails ainsi que les groupes d'
   e-mails qui seront les victimes. 
 
-* `messages.utf8` : Ce fichier représente un courrier électronique avec son sujet et son corps. 
+* `messages.json` : Ce fichier représente un courrier électronique avec son sujet et son corps. 
 
 ### Partie Main
 
