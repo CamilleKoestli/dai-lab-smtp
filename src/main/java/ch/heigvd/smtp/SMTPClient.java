@@ -71,6 +71,7 @@ public class SMTPClient {
 
     public void sendMail(Email e) throws IOException {
 
+        System.out.println("------ sending e-mail ------");
         this.connect();
 
         receiveResponse();
@@ -110,5 +111,7 @@ public class SMTPClient {
         receiveResponse();
 
         reader.close();
+
+        this.disconnect();
     }
 }
