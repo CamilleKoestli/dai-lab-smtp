@@ -18,7 +18,7 @@ import java.util.List;
 public class ConfigManager {
 
     /* Number of groups for the e-mail prank */
-    public int nbGroups;
+    private int nbGroups;
 
     /* Messages to be sent */
     public List<Message> messages;
@@ -35,9 +35,13 @@ public class ConfigManager {
      * @throws IOException if there is an issue reading the JSON files.
      */
     public ConfigManager(int nbGroups, String messagesFilePath, String victimsFilePath) throws IOException {
-        this.nbGroups = nbGroups;
-        readMessagesFromJsonFile(messagesFilePath);
-        getGroupMailsFromJsonFile(victimsFilePath);
+        try {
+            this.nbGroups = nbGroups;
+            readMessagesFromJsonFile(messagesFilePath);
+            getGroupMailsFromJsonFile(victimsFilePath);
+        } catch (IOException e){
+            System.err.println("Error reading configuration files: " + e.getMessage());
+        }
     }
 
     /**
@@ -120,6 +124,14 @@ public class ConfigManager {
         System.out.println(emailGroups);
 
         this.emailGroups = emailGroups;
+    }
+
+    /**
+     * Gets the number of groups for the email prank.
+     * @return The number of groups.
+     */
+    public int getNbGroups() {
+        return nbGroups;
     }
 
     //TODO EmailValidator

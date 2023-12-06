@@ -17,7 +17,7 @@ public class Main {
 
             SMTPClient smtpClient = new SMTPClient(Configuration.HOST_ADDRESS, Configuration.PORT_NB);
 
-            for(int i = 0; i < configManager.nbGroups; ++i){
+            for(int i = 0; i < configManager.getNbGroups(); ++i){
                 smtpClient.sendMail(new Email(configManager.emailGroups.get(i), configManager.messages.get(i)));
             }
 
