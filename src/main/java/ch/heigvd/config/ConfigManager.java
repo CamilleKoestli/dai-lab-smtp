@@ -1,6 +1,8 @@
 package ch.heigvd.fileio;
 
 import ch.heigvd.smtp.*;
+import ch.heigvd.config.ConfigManager;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -40,10 +42,14 @@ public class MessageManager {
             Message message = new Message(subject, body);
             messages.add(message);
         }
+
+        //Shuffle messages
+        Collections.shuffle(messages);
+
         return messages;
     }
 
-    public List<EmailGroup> getGroupMailsFromJsonFile(String emailFilePath) throws IOException {
+    public List<EmailGroup> getGroupMailsFromJsonFile(String emailFilePath, int nbGroups) throws IOException {
 
         List<String> emails = new ArrayList<>();
         List<EmailGroup> emailGroups = new ArrayList<>();
@@ -60,13 +66,18 @@ public class MessageManager {
             emails.add(email);
         }
 
+        //Shuffle emails
         Collections.shuffle(emails);
 
-        // Create EmailGroup objects with 2/3 emails in random order
-        for (int i = 0; i < emails.size(); i += 3) {
+        // Create EmailGroup objects
+        int idx;
+        for (int i = 0; i < nbGroups; ++i) {
             EmailGroup emailGroup = new EmailGroup();
-            for (int j = 0; j < 3 && i + j < emails.size(); j++) {
-                emailGroup.addEmailAddress(emails.get(i + j));
+            for (int j = 0; emails.size() / nbGroups; ++j) {
+                idx = i * nbGroups + j;
+                if(idx < emails.size()) {
+                    emailGroup.addEmailAddress(emails.get(idx));
+                }
             }
             emailGroups.add(emailGroup);
         }
