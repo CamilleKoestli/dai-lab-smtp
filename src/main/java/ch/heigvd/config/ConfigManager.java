@@ -10,38 +10,74 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * The ConfigManager class manages the configuration for the email prank application.
  * It reads messages and email groups from JSON files.
  */
 public class ConfigManager {
+    /* Min and max number of groups accepted */
+    public static int MIN_NB_GROUPS;
+    public static int MAX_NB_GROUPS;
 
     /* Number of groups for the e-mail prank */
     private int nbGroups;
 
-    /* Messages to be sent */
-    public List<Message> messages;
+    /* List of e-mails for pranks */
+    List<String> emails;
 
     /* Email groups containing sender and receivers of the messages */
     public List<EmailGroup> emailGroups;
 
+    /* Messages to be sent */
+    public List<Message> messages;
+
+
     /**
      * Constructs a ConfigManager with the specified number of groups and file paths.
      *
-     * @param nbGroups           The number of groups for the email prank.
      * @param messagesFilePath   The file path to the JSON file containing messages.
      * @param victimsFilePath    The file path to the JSON file containing victim emails.
      * @throws IOException if there is an issue reading the JSON files.
      */
-    public ConfigManager(int nbGroups, String messagesFilePath, String victimsFilePath) throws IOException {
+    public ConfigManager(String[] args, String messagesFilePath, String victimsFilePath) throws IOException {
         try {
-            this.nbGroups = nbGroups;
             readMessagesFromJsonFile(messagesFilePath);
-            getGroupMailsFromJsonFile(victimsFilePath);
+            getEmailsFromJsonFile(victimsFilePath);
+            this.nbGroups = getNbGroupsFromCommandLine(args);
+            setEmailGroups();
         } catch (IOException e){
             System.err.println("Error reading configuration files: " + e.getMessage());
         }
+    }
+
+    /**
+     * Gets the number of groups from the command line arguments, ensuring it is within
+     * the allowed range. If not specified or invalid, prompts the user for input.
+     *
+     * @param args The command line arguments.
+     * @return The number of groups.
+     */
+    public static int getNbGroupsFromCommandLine(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int nbGroups;
+        boolean validInput = false;
+
+        do {
+            // Asks for user input
+            System.out.print("Enter the number of groups (between " + MIN_NB_GROUPS + " and " + MAX_NB_GROUPS + "): ");
+            nbGroups = scanner.nextInt();
+            validInput = validUserInput(nbGroups);
+
+        } while (!validInput);
+
+        return nbGroups;
+    }
+
+    public static boolean validUserInput(int input){
+        return (input >= Configuration.MIN_GROUP_SIZE && input <= Configuration.MAX_GROUP_SIZE);
     }
 
     /**
@@ -88,11 +124,8 @@ public class ConfigManager {
      * @param victimsFilePath The file path to the JSON file containing victim emails.
      * @throws IOException if there is an issue reading the JSON file.
      */
-    public void getGroupMailsFromJsonFile(String victimsFilePath) throws IOException {
-
+    public void getEmailsFromJsonFile(String victimsFilePath) throws IOException {
         List<String> emails = new ArrayList<>();
-        List<EmailGroup> emailGroups = new ArrayList<>();
-
         File file = new File(victimsFilePath);
         String email;
 
@@ -105,16 +138,28 @@ public class ConfigManager {
             emails.add(email);
         }
 
+        // Set min and max nb of groups
+        setMinMaxNbGroups(emails.size());
+
         //Shuffle emails
         Collections.shuffle(emails);
 
-        // Create EmailGroup objects
+        this.emails = emails;
+    }
+
+    public void setEmailGroups(){
+        List<EmailGroup> emailGroups = new ArrayList<>();
+
+        int pPerGroup = emails.size() / nbGroups;
+        System.out.println("personnes par groupe: " + pPerGroup);   //TODO
         int idx;
-        for (int i = 0; i < Configuration.NB_GROUP; ++i) {
+
+        for (int i = 0; i < nbGroups; ++i) {
             EmailGroup emailGroup = new EmailGroup();
-            for (int j = 0; j < emails.size() / Configuration.NB_GROUP; ++j) {
-                idx = i * Configuration.NB_GROUP + j;
+            for (int j = 0; j < pPerGroup; ++j) {
+                idx = i * pPerGroup + j;
                 if (idx < emails.size()) {
+                    System.out.println(emails.get(idx));
                     emailGroup.addEmailAddress(emails.get(idx));
                 }
             }
@@ -124,6 +169,14 @@ public class ConfigManager {
         System.out.println(emailGroups);
 
         this.emailGroups = emailGroups;
+    }
+
+    /**
+     * Sets number of given emails.
+     */
+    private void setMinMaxNbGroups(int emailsListSize){
+        this.MIN_NB_GROUPS = emailsListSize / Configuration.MAX_GROUP_SIZE;
+        this.MAX_NB_GROUPS = emailsListSize / Configuration.MIN_GROUP_SIZE;
     }
 
     /**
