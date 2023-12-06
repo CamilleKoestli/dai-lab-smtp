@@ -63,7 +63,7 @@ Implémentation
 
 ### Diagramme UML
 
-![diagram.png](main/java/ch/heigvd/diagram.png)
+![diagram.png](src/main/java/ch/heigvd/diagram.png)
 
 On peut séparer notre code en 4 parties :
 
