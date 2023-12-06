@@ -11,19 +11,41 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The ConfigManager class manages the configuration for the email prank application.
+ * It reads messages and email groups from JSON files.
+ */
 public class ConfigManager {
 
     /* Number of groups for the e-mail prank */
     public int nbGroups;
+
+    /* Messages to be sent */
     public List<Message> messages;
+
+    /* Email groups containing sender and receivers of the messages */
     public List<EmailGroup> emailGroups;
 
+    /**
+     * Constructs a ConfigManager with the specified number of groups and file paths.
+     *
+     * @param nbGroups           The number of groups for the email prank.
+     * @param messagesFilePath   The file path to the JSON file containing messages.
+     * @param victimsFilePath    The file path to the JSON file containing victim emails.
+     * @throws IOException if there is an issue reading the JSON files.
+     */
     public ConfigManager(int nbGroups, String messagesFilePath, String victimsFilePath) throws IOException {
         this.nbGroups = nbGroups;
         readMessagesFromJsonFile(messagesFilePath);
         getGroupMailsFromJsonFile(victimsFilePath);
     }
 
+    /**
+     * Reads messages from a JSON file and shuffles them.
+     *
+     * @param messagesList The file path to the JSON file containing messages.
+     * @throws IOException if there is an issue reading the JSON file.
+     */
     public void readMessagesFromJsonFile(String messagesList) throws IOException {
         List<Message> messages = new ArrayList<>();
         File file = new File(messagesList);
@@ -40,15 +62,14 @@ public class ConfigManager {
         // Get the "messages" node
         JsonNode messagesNode = jsonNode.get("messages");
 
-        // Iterate through each "message" in "messages"
+        // Iterate through each "messageNode" in "messagesNode"
         for (JsonNode messageNode : messagesNode) {
             // Extract "subject" and "body" from each "message"
             subject = messageNode.get("subject").asText();
             body = messageNode.get("body").asText();
 
             // Create Message object and add it to the list
-            Message message = new Message(subject, body);
-            messages.add(message);
+            messages.add(new Message(subject, body));
         }
 
         //Shuffle messages
@@ -57,6 +78,12 @@ public class ConfigManager {
         this.messages = messages;
     }
 
+    /**
+     * Reads email addresses from a JSON file, shuffles them, and creates email groups.
+     *
+     * @param victimsFilePath The file path to the JSON file containing victim emails.
+     * @throws IOException if there is an issue reading the JSON file.
+     */
     public void getGroupMailsFromJsonFile(String victimsFilePath) throws IOException {
 
         List<String> emails = new ArrayList<>();
