@@ -1,7 +1,6 @@
-package ch.heigvd.fileio;
+package ch.heigvd.config;
 
 import ch.heigvd.smtp.*;
-import ch.heigvd.config.ConfigManager;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,13 +11,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MessageManager {
+public class ConfigManager {
 
-    public MessageManager() {}
+    /* Number of groups for the e-mail prank */
+    public int nbGroups;
+    public List<Message> messages;
+    public List<EmailGroup> emailGroups;
 
-    public List<Message> readMessagesFromJsonFile(String filePath) throws IOException {
+    public ConfigManager(int nbGroups, String messagesFilePath, String victimsFilePath) throws IOException {
+        this.nbGroups = nbGroups;
+        readMessagesFromJsonFile(messagesFilePath);
+        getGroupMailsFromJsonFile(victimsFilePath);
+    }
+
+    public void readMessagesFromJsonFile(String messagesList) throws IOException {
         List<Message> messages = new ArrayList<>();
-        File file = new File(filePath);
+        File file = new File(messagesList);
 
         String subject;
         String body;
@@ -46,15 +54,15 @@ public class MessageManager {
         //Shuffle messages
         Collections.shuffle(messages);
 
-        return messages;
+        this.messages = messages;
     }
 
-    public List<EmailGroup> getGroupMailsFromJsonFile(String emailFilePath, int nbGroups) throws IOException {
+    public void getGroupMailsFromJsonFile(String victimsFilePath) throws IOException {
 
         List<String> emails = new ArrayList<>();
         List<EmailGroup> emailGroups = new ArrayList<>();
 
-        File file = new File(emailFilePath);
+        File file = new File(victimsFilePath);
         String email;
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -71,11 +79,11 @@ public class MessageManager {
 
         // Create EmailGroup objects
         int idx;
-        for (int i = 0; i < nbGroups; ++i) {
+        for (int i = 0; i < Configuration.NB_GROUP; ++i) {
             EmailGroup emailGroup = new EmailGroup();
-            for (int j = 0; emails.size() / nbGroups; ++j) {
-                idx = i * nbGroups + j;
-                if(idx < emails.size()) {
+            for (int j = 0; j < emails.size() / Configuration.NB_GROUP; ++j) {
+                idx = i * Configuration.NB_GROUP + j;
+                if (idx < emails.size()) {
                     emailGroup.addEmailAddress(emails.get(idx));
                 }
             }
@@ -84,7 +92,7 @@ public class MessageManager {
 
         System.out.println(emailGroups);
 
-        return emailGroups;
+        this.emailGroups = emailGroups;
     }
 
     //TODO EmailValidator
