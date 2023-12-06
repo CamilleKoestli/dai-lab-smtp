@@ -2,11 +2,11 @@
   "messages": {
     "message1": {
       "subject": "Réunion de projet",
-      "body": " Bonjour,\n\nNous avons une réunion de projet prévue pour demain à 14h. Assurez-vous de préparer votre rapport de statut."
+      "body": "Bonjour,\n\nNous avons une réunion de projet prévue pour demain à 14h. Assurez-vous de préparer votre rapport de statut."
     },
     "message2": {
       "subject": "Invitation à un événement",
-      "body": "Hello,\n\nVous êtes cordialement invité à notre événement spécial le [date] à [heure]. Nous attendons votre présence avec impatience.\n\nA bientôt!"
+      "body": "Hello,\n\nVous êtes cordialement invité à notre événement spécial demain matin. Nous attendons votre présence avec impatience.\n\nA bientôt!"
     },
     "message3": {
       "subject": "Mise à jour du compte",
