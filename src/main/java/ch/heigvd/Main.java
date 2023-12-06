@@ -12,8 +12,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-
-            ConfigManager configManager = new ConfigManager(Configuration.NB_GROUP, Configuration.MESSAGES_FILE, Configuration.VICTIMS_FILE);
+            ConfigManager configManager = new ConfigManager(args, Configuration.MESSAGES_FILE, Configuration.VICTIMS_FILE);
 
             SMTPClient smtpClient = new SMTPClient(Configuration.HOST_ADDRESS, Configuration.PORT_NB);
 
