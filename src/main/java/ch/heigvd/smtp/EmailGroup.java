@@ -1,6 +1,6 @@
 package ch.heigvd.smtp;
 
-import ch.heigvd.fileio.*;
+import ch.heigvd.config.ConfigManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,9 +49,4 @@ public class EmailGroup {
         return receivers;
     }
 
-    public void readEmailsFromFile(String emailFile) throws IOException {
-        // Use the MessageManager class to get a list of EmailGroups
-        MessageManager messageManager = new MessageManager();
-        List<EmailGroup> emailGroups = messageManager.getGroupMailsFromJsonFile(emailFile);
-    }
 }
