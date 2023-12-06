@@ -69,7 +69,7 @@ public class SMTPClient {
         }
     }
 
-    public void sendMail(String from, List<String> to, String subject, String body) throws IOException {
+    public void sendMail(Email e) throws IOException {
 
         this.connect();
 
@@ -78,26 +78,33 @@ public class SMTPClient {
         sendSMTPRequest("ehlo " + this.serverAddress);
         receiveResponse();
 
-        for (String rec : to) {
-            sendSMTPRequest("mail from:<" + from + ">");
-            receiveResponse();
+        sendSMTPRequest("mail from:<" + e.getSender() + ">");
+        receiveResponse();
 
+        for (String rec : e.getReceivers()) {
             sendSMTPRequest("rcpt to:<" + rec + ">");
             receiveResponse();
-
-            sendSMTPRequest("data");
-            receiveResponse();
-
-            //TODO
-            sendSMTPRequest("Content-Type: text/plain; charset=utf-8");
-            sendSMTPRequest("from:<" + from + ">");
-            sendSMTPRequest("to:<" + rec + ">");
-            sendSMTPRequest("subject: " + subject);
-            sendSMTPRequest("\n");
-            sendSMTPRequest(body);
-            sendSMTPRequest(".");
-            receiveResponse();
         }
+
+        sendSMTPRequest("data");
+        receiveResponse();
+
+        sendSMTPRequest("Content-Type: text/plain; charset=utf-8");
+        sendSMTPRequest("from:<" + e.getSender() + ">");
+
+        writer.write("to:" + e.getReceivers().get(0));
+        for(int i = 1; i < e.getReceivers().size(); ++i){
+            writer.write(", ");
+            writer.write(", " + e.getReceivers().get(i));
+        }
+        writer.write("\r\n");
+        writer.flush();
+
+        sendSMTPRequest("subject: " + e.getSubject());
+        sendSMTPRequest("\n");
+        sendSMTPRequest(e.getBody());
+        sendSMTPRequest(".");
+        receiveResponse();
 
         sendSMTPRequest("quit");
         receiveResponse();
