@@ -157,7 +157,6 @@ public class ConfigManager {
         List<EmailGroup> emailGroups = new ArrayList<>();
 
         int pPerGroup = emails.size() / nbGroups;
-        System.out.println("personnes par groupe: " + pPerGroup);   //TODO
         int idx;
 
         for (int i = 0; i < nbGroups; ++i) {
@@ -165,14 +164,11 @@ public class ConfigManager {
             for (int j = 0; j < pPerGroup; ++j) {
                 idx = i * pPerGroup + j;
                 if (idx < emails.size()) {
-                    System.out.println(emails.get(idx));
                     emailGroup.addEmailAddress(emails.get(idx));
                 }
             }
             emailGroups.add(emailGroup);
         }
-
-        System.out.println(emailGroups);
 
         this.emailGroups = emailGroups;
     }

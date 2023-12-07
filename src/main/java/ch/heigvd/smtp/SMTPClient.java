@@ -2,44 +2,75 @@ package ch.heigvd.smtp;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
+/**
+ * The SMTPClient class represents a simple SMTP client for sending emails.
+ * It establishes a connection with an SMTP server, sends email requests, and disconnects.
+ * It also provides methods to send emails using the SMTP protocol.
+ *
+ * The client connects to the server, sends the necessary SMTP commands for
+ * email delivery, and then disconnects after sending the email.
+ *
+ * Instances of this class can be used to send emails by providing an Email object
+ * containing the necessary information such as sender, receivers, subject, and body.
+ *
+ * @author [Author Name]
+ */
 public class SMTPClient {
+    /* The SMTP server address */
     private String serverAddress;
+
+    /* The port number for the SMTP server */
     private int port;
+
+    /* The socket for communication with the SMTP server */
     private Socket socket;
+
+    /* The buffered reader for reading responses from the SMTP server. */
     private BufferedReader reader;
+
+    /* The buffered writer for sending SMTP requests to the server. */
     private BufferedWriter writer;
-    private String lastSentSubject;
-    private String lastSentBody;
 
-
+    /**
+     * Constructs an SMTP client with the specified server address and port.
+     *
+     * @param serverAddress The SMTP server address.
+     * @param port          The port number for the SMTP server.
+     */
     public SMTPClient(String serverAddress, int port) {
         this.serverAddress = serverAddress;
         this.port = port;
     }
 
-    public String getSubject() {
-        return lastSentSubject;
-    }
-
-    public String getBody() {
-        return lastSentBody;
-    }
-
+    /**
+     * Establishes a connection with the SMTP server.
+     *
+     * @throws IOException If an I/O error occurs.
+     */
     public void connect() throws IOException {
         socket = new Socket(serverAddress, port);
         reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
     }
 
+    /**
+     * Sends an SMTP request to the server.
+     *
+     * @param request The SMTP request to be sent.
+     * @throws IOException If an I/O error occurs.
+     */
     public void sendSMTPRequest(String request) throws IOException {
         writer.write(request + "\r\n");
         System.out.println("C: " + request);
         writer.flush();
     }
 
+    /**
+     * Receives and prints the response from the SMTP server.
+     *
+     * @throws IOException If an I/O error occurs.
+     */
     public void receiveResponse() throws IOException {
         String line;
         while ((line = reader.readLine()) != null) {
@@ -50,6 +81,11 @@ public class SMTPClient {
         }
     }
 
+    /**
+     * Disconnects from the SMTP server.
+     *
+     * @throws IOException If an I/O error occurs.
+     */
     public void disconnect() throws IOException {
         if (socket != null && !socket.isClosed()) {
             try {
@@ -69,9 +105,15 @@ public class SMTPClient {
         }
     }
 
+    /**
+     * Sends an email using the SMTP protocol.
+     *
+     * @param e The Email object containing email information.
+     * @throws IOException If an I/O error occurs during email transmission.
+     */
     public void sendMail(Email e) throws IOException {
 
-        System.out.println("------ sending e-mail ------");
+        System.out.println("---- sending email -----");
         this.connect();
 
         receiveResponse();
