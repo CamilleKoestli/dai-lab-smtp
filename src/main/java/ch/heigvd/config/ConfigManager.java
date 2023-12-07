@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The ConfigManager class manages the configuration for the email prank application.
@@ -135,6 +137,10 @@ public class ConfigManager {
 
         for (JsonNode node : emailsNode) {
             email = node.get("mail").asText();
+            if(!isValidEmailAddress(email)){
+                System.err.println("Invalid email address: " + email);
+                continue;
+            }
             emails.add(email);
         }
 
@@ -172,6 +178,20 @@ public class ConfigManager {
     }
 
     /**
+     * Validates an email address using a regular expression pattern.
+     *
+     * @param email The email address to validate.
+     * @return True if the email address is valid, false otherwise.
+     *
+     * @see <a href="https://www.javatpoint.com/java-email-validation">JavaTpoint Email Validation</a>
+     */
+    public static boolean isValidEmailAddress(String email){
+        Pattern pattern = Pattern.compile(Configuration.EMAIL_PATTERN);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    /**
      * Sets number of given emails.
      */
     private void setMinMaxNbGroups(int emailsListSize){
@@ -186,7 +206,4 @@ public class ConfigManager {
     public int getNbGroups() {
         return nbGroups;
     }
-
-    //TODO EmailValidator
-
 }

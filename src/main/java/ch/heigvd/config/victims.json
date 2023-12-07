@@ -1,14 +1,43 @@
 {
-  "emails" : {
-    "email1" : {"mail" : "alice@example.com"},
-    "email2" : {"mail" :"bob@example.com"},
-    "email3" : {"mail" :"claire@example.com"},
-    "email4" : {"mail" :"david@example.com"},
-    "email5" : {"mail" :"emma@example.com"},
-    "email6" : {"mail" :"frank@example.com"},
-    "email7" : {"mail" :"grace@example.com"},
-    "email8" : {"mail" :"hank@example.com"},
-    "email9" : {"mail" :"isabel@example.com"},
-    "email10" : {"mail" :"jason@example.com"}
+  "emails": {
+    "email1": {
+      "mail": "alice@example.com"
+    },
+    "email2": {
+      "mail": "bob@example.com"
+    },
+    "email3": {
+      "mail": "claire@example.com"
+    },
+    "email4": {
+      "mail": "david@example.com"
+    },
+    "email5": {
+      "mail": "emma@example.com"
+    },
+    "email6": {
+      "mail": "frank@example.com"
+    },
+    "email7": {
+      "mail": "grace@example.com"
+    },
+    "email8": {
+      "mail": "hank@example.com"
+    },
+    "email9": {
+      "mail": "isabel@example.com"
+    },
+    "email10": {
+      "mail": "jason@example.com"
+    },
+    "email11": {
+      "mail": "98.com"
+    },
+    "email12": {
+      "mail": "jaimedai.com"
+    },
+    "email13": {
+      "mail": ""
+    }
   }
 }
