@@ -20,6 +20,7 @@ public class EmailGroup {
      */
     public EmailGroup() {
         emailAddresses = new ArrayList<>();
+        receivers = new ArrayList<>();
     }
 
     /**
