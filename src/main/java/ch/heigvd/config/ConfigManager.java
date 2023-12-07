@@ -72,6 +72,9 @@ public class ConfigManager {
             System.out.print("Enter the number of groups (between " + MIN_NB_GROUPS + " and " + MAX_NB_GROUPS + "): ");
             nbGroups = scanner.nextInt();
             validInput = validUserInput(nbGroups);
+            if(!validInput){
+                System.err.println("Arguments non valides. Veuillez essayer à nouveau.");
+            }
 
         } while (!validInput);
 
